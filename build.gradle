@@ -1,0 +1,50 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version "1.7.21"
+    id "org.jetbrains.kotlin.plugin.allopen" version "1.7.21"
+    id 'io.quarkus'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:quarkus-amazon-services-bom:${quarkusPlatformVersion}")
+    implementation 'io.quarkiverse.amazonservices:quarkus-amazon-dynamodb-enhanced:1.5.0'
+    implementation 'io.quarkus:quarkus-kotlin:2.15.3.Final'
+    implementation 'io.quarkiverse.amazonservices:quarkus-amazon-dynamodb:1.5.0'
+    implementation 'software.amazon.awssdk:url-connection-client:2.19.18'
+    implementation 'software.amazon.awssdk:netty-nio-client:2.19.18'
+    implementation 'io.quarkus:quarkus-smallrye-graphql:2.15.3.Final'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.22'
+    implementation 'io.quarkus:quarkus-arc:2.15.3.Final'
+    testImplementation 'io.quarkus:quarkus-junit5:2.15.3.Final'
+}
+
+group 'org.kazu'
+version '1.0.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_15
+    targetCompatibility = JavaVersion.VERSION_15
+}
+
+test {
+    systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
+}
+allOpen {
+    annotation("javax.ws.rs.Path")
+    annotation("javax.enterprise.context.ApplicationScoped")
+    annotation("io.quarkus.test.junit.QuarkusTest")
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_15
+    kotlinOptions.javaParameters = true
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_15
+}
